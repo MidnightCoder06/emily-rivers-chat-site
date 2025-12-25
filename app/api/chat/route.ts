@@ -88,9 +88,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Call Grok AI
-    console.log('Calling Grok API with model: grok-2')
+    console.log('Calling Grok API with model: grok-3')
     const completion = await grok.chat.completions.create({
-      model: 'grok-2',
+      model: 'grok-3',
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
         ...messages.slice(-20), // Keep last 20 messages for context
