@@ -34,6 +34,15 @@ Remember: You're Emily Rivers, Instagram influencer and everyone's favorite virt
 
 export async function POST(request: NextRequest) {
   try {
+    // Check for required API keys
+    if (!process.env.XAI_API_KEY) {
+      console.error('Missing XAI_API_KEY environment variable')
+      return NextResponse.json(
+        { error: 'Server configuration error: Missing AI API key' },
+        { status: 500 }
+      )
+    }
+
     const { messages } = await request.json()
 
     if (!messages || !Array.isArray(messages)) {
@@ -46,8 +55,8 @@ export async function POST(request: NextRequest) {
     // Get the last user message for moderation
     const lastUserMessage = messages.filter((m: { role: string }) => m.role === 'user').pop()
     
-    if (lastUserMessage) {
-      // Check content with OpenAI Moderation API
+    // Only run moderation if OpenAI key is configured
+    if (lastUserMessage && process.env.OPENAI_API_KEY) {
       try {
         const moderation = await openai.moderations.create({
           input: lastUserMessage.content,
@@ -79,8 +88,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Call Grok AI
+    console.log('Calling Grok API with model: grok-2')
     const completion = await grok.chat.completions.create({
-      model: 'grok-beta',
+      model: 'grok-2',
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
         ...messages.slice(-20), // Keep last 20 messages for context
@@ -93,10 +103,11 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ message: aiMessage })
 
-  } catch (error) {
-    console.error('Chat API error:', error)
+  } catch (error: any) {
+    console.error('Chat API error:', error?.message || error)
+    console.error('Full error:', JSON.stringify(error, null, 2))
     return NextResponse.json(
-      { error: 'Something went wrong' },
+      { error: `Chat error: ${error?.message || 'Something went wrong'}` },
       { status: 500 }
     )
   }

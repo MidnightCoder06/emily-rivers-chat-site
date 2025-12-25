@@ -21,7 +21,7 @@ export async function POST() {
               description: 'One-time chat session with your favorite virtual companion',
               images: [],
             },
-            unit_amount: 500, // $5.00 in cents
+            unit_amount: 900, // $9.00 in cents
           },
           quantity: 1,
         },

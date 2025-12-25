@@ -8,25 +8,21 @@ export default function Home() {
 
   const handleChatClick = async () => {
     setIsLoading(true)
-    // TODO: Uncomment Stripe checkout when ready
-    // try {
-    //   const response = await fetch('/api/create-checkout', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //   })
-    //   const data = await response.json()
-    //   if (data.url) {
-    //     window.location.href = data.url
-    //   }
-    // } catch (error) {
-    //   console.error('Error:', error)
-    //   setIsLoading(false)
-    // }
-    
-    // Temporary: Go directly to chat (bypass payment)
-    window.location.href = '/chat'
+    try {
+      const response = await fetch('/api/create-checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const data = await response.json()
+      if (data.url) {
+        window.location.href = data.url
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -141,7 +137,7 @@ export default function Home() {
               <>
                 <span>Chat with Me</span>
                 <span className="text-2xl">💕</span>
-                <span className="text-emily-gold-300">$5</span>
+                <span className="text-emily-gold-300">$9</span>
               </>
             )}
           </motion.button>

@@ -7,11 +7,6 @@ const getSecretKey = () => {
 }
 
 export async function GET(request: NextRequest) {
-  // TODO: Uncomment session verification when Stripe is set up
-  // For now, always allow access for testing
-  return NextResponse.json({ valid: true, sessionId: 'test-session' })
-
-  /*
   try {
     const token = request.cookies.get('emily_session')?.value
 
@@ -45,6 +40,5 @@ export async function GET(request: NextRequest) {
     console.error('Session verification error:', error)
     return NextResponse.json({ valid: false, reason: 'invalid_token' })
   }
-  */
 }
 
