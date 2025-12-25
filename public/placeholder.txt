@@ -1,0 +1,8 @@
+# Public Assets
+Add your images and assets here.
+
+Suggested assets:
+- favicon.ico
+- emily-avatar.png (profile picture)
+- og-image.png (social sharing image)
+
